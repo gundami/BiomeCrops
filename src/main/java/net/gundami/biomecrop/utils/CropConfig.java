@@ -20,7 +20,7 @@ public class CropConfig implements SimpleSynchronousResourceReloadListener {
 
     public static Float getBiomeCropMultiplier(Identifier cropIdentifier,Identifier biome){
         float modifier =1f;
-        System.out.println(cropIdentifier);
+        //System.out.println(cropIdentifier);
         try {
             CropBiomeConfig config = biomeCropConfigMap.get(cropIdentifier);
             modifier = config.getModifier(biome);

@@ -3,7 +3,7 @@ package net.gundami.biomecrop.utils;
 import net.gundami.biomecrop.BiomeCrop;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -31,7 +31,7 @@ public class GrowthUtil {
                 float rand = random.nextFloat();
                 if(multiplier >= rand) {
                     seasons$shouldInject = false;
-                    BiomeCrop.LOGGER.info("randomTick");
+                    //BiomeCrop.LOGGER.info("randomTick");
                     fertilizable.randomTick(state, world, pos, random);
                     multiplier -= 1f;
                 }
@@ -50,7 +50,7 @@ public class GrowthUtil {
                 float rand = random.nextFloat();
                 if(multiplier >= rand) {
                     seasons$shouldInject = false;
-                    BiomeCrop.LOGGER.info("grow");
+                    //BiomeCrop.LOGGER.info("grow");
                     fertilizable.grow(world, random, pos, state);
                 }
             }
@@ -60,7 +60,7 @@ public class GrowthUtil {
     }
     public static float getMultiplier(ServerWorld world, BlockPos pos, BlockState state) {
 
-        return CropConfig.getBiomeCropMultiplier(Registry.ITEM.getId(state.getBlock().asItem()),world.getBiome(pos).getKey().get().getValue());
+        return CropConfig.getBiomeCropMultiplier(Registries.ITEM.getId(state.getBlock().asItem()),world.getBiome(pos).getKey().get().getValue());
     }
 
 

@@ -10,7 +10,7 @@ import net.minecraft.resource.ResourceType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +38,7 @@ public class BiomeCrop implements ModInitializer {
 						if (context.getSource().isExecutedByPlayer()) {
 							ServerPlayerEntity player = context.getSource().getPlayer();
 							Identifier biomeIdentifier = player.getWorld().getBiome(context.getSource().getPlayer().getBlockPos()).getKey().get().getValue();
-							Identifier cropIdentifier = Registry.ITEM.getId(player.getStackInHand(player.getActiveHand()).getItem());
+							Identifier cropIdentifier = Registries.ITEM.getId(player.getStackInHand(player.getActiveHand()).getItem());
 							float modifier =  CropConfig.getBiomeCropMultiplier(cropIdentifier,biomeIdentifier);
 							CropBiomeConfig config = CropConfig.getBiomeCropConfig(cropIdentifier);
 							if (config==null){
