@@ -3,6 +3,7 @@ package net.gundami.biomecrops.mixin;
 import net.gundami.biomecrops.BiomeCrops;
 import net.gundami.biomecrops.data.CropData;
 import net.gundami.biomecrops.utils.EnvironmentUtil;
+import net.gundami.biomecrops.utils.IBiomeCrop;
 import net.minecraft.block.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.server.world.ServerWorld;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = {CropBlock.class, CocoaBlock.class, StemBlock.class, SaplingBlock.class, SweetBerryBushBlock.class})
-public abstract class CropGrowMixin extends Block implements Fertilizable {
+public abstract class CropGrowMixin extends Block implements Fertilizable, IBiomeCrop {
 
     private static boolean seasons$shouldInject = true;
     public CropGrowMixin(Settings settings) {
@@ -44,7 +45,7 @@ public abstract class CropGrowMixin extends Block implements Fertilizable {
                         if(multiplier >= rand) {
                             seasons$shouldInject = false;
                             fertilizable.randomTick(state, world, pos, random);
-                            System.out.println("grow");
+                            //System.out.println("grow");
                             multiplier -= 1f;
                         }
                     }
@@ -71,7 +72,7 @@ public abstract class CropGrowMixin extends Block implements Fertilizable {
                         if(multiplier >= rand) {
                             seasons$shouldInject = false;
                             fertilizable.grow(world, random, pos, state);
-                            System.out.println("fer");
+                            //System.out.println("fer");
                             multiplier -= 1f;
                         }
                     }

@@ -5,7 +5,7 @@
 	"name": "Biome Crops",
 	"description": "Plants grow speed in different biomes.",
 	"authors": [
-		"Me!"
+		"gundami"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",
@@ -17,6 +17,9 @@
 	"entrypoints": {
 		"main": [
 			"net.gundami.biomecrops.BiomeCrops"
+		],
+		"client": [
+			"net.gundami.biomecrops.BiomeCropsClient"
 		]
 	},
 	"mixins": [

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.gundami.biomecrops.BiomeCrops;
 import net.gundami.biomecrops.data.CropData;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
@@ -13,10 +14,27 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 public class CropDataConfig implements SimpleSynchronousResourceReloadListener {
+
+    public static void toBuf(PacketByteBuf buf) {
+        buf.writeInt(BiomeCrops.cropDataHashMap.size());
+        BiomeCrops.cropDataHashMap.forEach((id, cropData) -> {
+            buf.writeIdentifier(id);
+            cropData.toBuf(buf);
+        });
+    }
+    public static HashMap<Identifier, CropData> fromBuf(PacketByteBuf buf) {
+        HashMap<Identifier, CropData> cropConfigMap = new HashMap<>();
+        int size = buf.readInt();
+        for(int i = 0; i < size; i++) {
+            cropConfigMap.put(buf.readIdentifier(), CropData.fromBuf(buf));
+        }
+        return cropConfigMap;
+    }
 
     @Override
     public Identifier getFabricId() {

@@ -55,8 +55,8 @@ public class EnvironmentUtil {
 
         if (canGrow(cropData)){
             return  (((1-(Math.abs(envTemperature-midT))/(cropTempMax-cropTempMin))+
-                        (1-(Math.abs(envHumidity-midH))/(cropHumidityMax-cropHumidityMin)))/2) * 0.5f;
-            //offset 0.5
+                        (1-(Math.abs(envHumidity-midH))/(cropHumidityMax-cropHumidityMin)))/2);
+            //offset 0
         }else {
             return 0;
         }

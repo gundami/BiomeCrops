@@ -3,11 +3,15 @@ package net.gundami.biomecrops;
 import net.fabricmc.api.ModInitializer;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.gundami.biomecrops.data.CropData;
 import net.gundami.biomecrops.utils.CommandRegistry;
 import net.gundami.biomecrops.utils.CropDataConfig;
 import net.gundami.biomecrops.utils.ItemRegistry;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
@@ -23,6 +27,7 @@ public class BiomeCrops implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static HashMap<Identifier, CropData> cropDataHashMap = new HashMap<>();
+    public static Identifier UPDATE_CROP_DATA = new Identifier(MOD_ID,"update_crop_data");
 
     @Override
     public void onInitialize() {
@@ -31,6 +36,12 @@ public class BiomeCrops implements ModInitializer {
         // Proceed with mild caution.
 
         LOGGER.info("Biome Crops loading!");
+
+        ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register((player, joined) -> {
+            PacketByteBuf buf = PacketByteBufs.create();
+            CropDataConfig.toBuf(buf);
+            ServerPlayNetworking.send(player, UPDATE_CROP_DATA, buf);
+        });
 
         ResourceManagerHelper.get(ResourceType.SERVER_DATA).registerReloadListener(new CropDataConfig());
         CommandRegistrationCallback.EVENT.register(CommandRegistry::registerCommands);
